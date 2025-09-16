@@ -19,6 +19,16 @@ public class AppDBContext(DbContextOptions<AppDBContext> options) : DbContext(op
     }
 
 }
+
+/// <summary>
+/// Extension method for <see cref="ModelBuilder"/> that automatically configures
+/// a primary key named "Id" for all entities deriving from the specified base type.
+/// 
+/// This is useful to avoid explicitly defining a primary key in every migration.
+/// It skips abstract classes and owned entity types.
+/// </summary>
+/// <param name="modelBuilder">The <see cref="ModelBuilder"/> instance to configure.</param>
+/// <param name="baseType">The base type that target entities inherit from.</param
 public static class ModelBuilderExtensions
 {
     public static void ConfigureBaseKeys(this ModelBuilder modelBuilder, Type baseType)
