@@ -1,4 +1,4 @@
-﻿using OrderService.Base;
+﻿using OrderService.Base.Models;
 
 namespace OrderService.Models;
 public class Order(int OrderNumber, int Amount, DateTime OrderDate, DateTime DeadLine, decimal Price, decimal Discount, string Payment, string Supplier) : BaseModel

@@ -1,4 +1,4 @@
-﻿namespace OrderService.Base;
+﻿namespace OrderService.Base.Models;
 public class ImageModel
 {
     public byte[] Image { get; set; }

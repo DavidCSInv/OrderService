@@ -1,4 +1,4 @@
-﻿namespace OrderService.Base
+﻿namespace OrderService.Base.Models
 {
     public abstract class BaseModel
     {

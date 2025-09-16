@@ -10,8 +10,6 @@ public class HomeController(ICustomersRepository repository, AppDBContext appCon
 {
     // GET: HomeController
     [HttpGet]
-    [ProducesResponseType(200, Type = typeof(IEnumerable<Models.Customer>))]
-    [ProducesResponseType(400, Type = typeof(IEnumerable<Models.Customer>))]
     public async Task<ActionResult> GetCustomersAsync(CancellationToken cancellationToken)
     {
         var result = await repository.GetCustomersAsync(cancellationToken);
@@ -19,18 +17,16 @@ public class HomeController(ICustomersRepository repository, AppDBContext appCon
     }
 
     [HttpGet, Route("id")]
-    [ProducesResponseType(200, Type = typeof(IEnumerable<Models.Customer>))]
-    [ProducesResponseType(400, Type = typeof(IEnumerable<Models.Customer>))]
     public async Task<ActionResult> GetCustomerIdAsync([FromQuery] long id, CancellationToken cancellationToken)
     {
         var result = await repository.GetCustomerByIdAsync(id, cancellationToken);
 
-        return result == null ? NotFound("Notting was found please check if the user exists") : Ok(result);
+        return result == null
+            ? NotFound("Notting was found please check if the user exists")
+            : Ok(result);
     }
 
     [HttpGet, Route("name")]
-    [ProducesResponseType(200, Type = typeof(IEnumerable<Models.Customer>))]
-    [ProducesResponseType(400, Type = typeof(IEnumerable<Models.Customer>))]
     public async Task<ActionResult> GetNameAsync([FromQuery] List<string> name, CancellationToken cancellationToken)
     {
         var result = await repository.GetCustomerByNameAsync(name, cancellationToken);

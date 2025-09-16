@@ -1,4 +1,4 @@
-﻿using OrderService.Base;
+﻿using OrderService.Base.Models;
 using OrderService.Models;
 
 namespace OrderService.ViewModels

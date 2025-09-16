@@ -1,4 +1,4 @@
-﻿using OrderService.Base;
+﻿using OrderService.Base.Models;
 
 namespace OrderService.Models;
 public class Customer(string name, string surname, string pronouns, short age, DateTime birthday, string adress, string email, string password,

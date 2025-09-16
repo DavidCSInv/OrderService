@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using OrderService.Base.MvcConfigurations;
 using OrderService.Config;
 using OrderService.Configurations;
 using OrderService.Context;
@@ -6,14 +7,7 @@ using OrderService.Context;
 var builder = WebApplication.CreateBuilder(args);
 
 //  Services Configuration 
-
-// Add controllers to handle API endpoints
-builder.Services.AddControllers();
-
-// Configure Swagger/OpenAPI for API documentation
-builder.Services.AddEndpointsApiExplorer()
-                .AddSwaggerGen()
-                .AddOpenApi(); // Custom OpenAPI extension (if you have extra configuration)
+builder.Services.UseService();
 
 // Configure SQL Server database context
 builder.Services.AddDbContext<AppDBContext>(options =>
@@ -33,6 +27,8 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.UseApi();
+
 //  Middleware Pipeline
 
 // Enable Swagger UI in development environment
@@ -42,12 +38,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.MapOpenApi(); // Maps OpenAPI endpoints if you have a custom setup
 }
-
-// Apply CORS policy
-app.UseCors("AllowAll")
-   .UseRouting()
-   .UseHttpsRedirection()
-   .UseAuthorization();
 
 app.MapControllers();
 
