@@ -5,30 +5,24 @@ using OrderService.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//  Services Configuration 
 
+// Add controllers to handle API endpoints
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
-// Add services to the container.
-builder.Services.AddControllers();
-builder.Services.AddOpenApi();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// Configure Swagger/OpenAPI for API documentation
+builder.Services.AddEndpointsApiExplorer()
+                .AddSwaggerGen()
+                .AddOpenApi(); // Custom OpenAPI extension (if you have extra configuration)
 
-
-//Implementing The Database Conection
-
+// Configure SQL Server database context
 builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseSqlServer(AppSettingsHelper.GetConnectionString()));
 
-// This method gets called by the runtime. Use this method to add services to the container.
+// Configure Dependency Injection for application services
+builder.Services.AddDependencyInjection();
 
-builder.Services
-    .AddDependencyInjection()
-    .AddEndpointsApiExplorer()
-    .AddSwaggerGen();
-
+// Configure CORS policy to allow all origins, headers, and methods
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -39,20 +33,21 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+//  Middleware Pipeline
+
+// Enable Swagger UI in development environment
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.MapOpenApi(); // Maps OpenAPI endpoints if you have a custom setup
 }
 
-app.UseCors("AllowAll");
-app.UseRouting();
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
+// Apply CORS policy
+app.UseCors("AllowAll")
+   .UseRouting()
+   .UseHttpsRedirection()
+   .UseAuthorization();
 
 app.MapControllers();
 
