@@ -5,6 +5,7 @@
     <Nullable>annotations</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>bbb41997-e5ed-44d4-b1b7-061e40361baf</UserSecretsId>
+    <BaseOutputPath>C:\OrderService\OrderService\OrderService</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
