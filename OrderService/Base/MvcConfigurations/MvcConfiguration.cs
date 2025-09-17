@@ -1,4 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using OrderService.Config;
+using OrderService.Configurations;
+using OrderService.Context;
 
 namespace OrderService.Base.MvcConfigurations
 {
@@ -12,7 +16,11 @@ namespace OrderService.Base.MvcConfigurations
             {
                 options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status200OK));
                 options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status400BadRequest));
+                options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status401Unauthorized));
+                options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status404NotFound));
+                options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status408RequestTimeout));
                 options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
+                options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status502BadGateway));
             });
 
             // Configure CORS policy to allow all origins, headers, and methods
@@ -28,6 +36,13 @@ namespace OrderService.Base.MvcConfigurations
             services.AddEndpointsApiExplorer()
                     .AddSwaggerGen()
                     .AddOpenApi();
+
+            // Configure SQL Server database context
+            services.AddDbContext<AppDBContext>(options =>
+                    options.UseSqlServer(AppSettingsHelper.GetConnectionString()));
+
+            // Configure Dependency Injection for application services
+            services.AddDependencyInjection();
 
             return services;
         }
@@ -45,7 +60,8 @@ namespace OrderService.Base.MvcConfigurations
 
             app.UseRouting()
                .UseHttpsRedirection()
-               .UseAuthorization();
+               .UseAuthorization()
+               .UseEndpoints(e => e.MapControllers());
 
             return app;
         }
