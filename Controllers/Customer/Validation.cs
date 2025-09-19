@@ -7,8 +7,10 @@ namespace OrderService.Controllers.Customer
     {
         private readonly ICustomersRepository _repository;
 
-        public Validation()
+        public Validation(ICustomersRepository repository)
         {
+            _repository = repository;
+
             RuleFor(c => c.Name).NotNull().NotEmpty();
             RuleFor(c => c.Name).MaximumLength(300);
             RuleFor(c => c.Surname).NotNull().NotEmpty();
@@ -16,9 +18,6 @@ namespace OrderService.Controllers.Customer
             RuleFor(c => c.Email).EmailAddress().NotEmpty();
             RuleFor(c => c.Password).NotNull().NotEmpty();
             RuleFor(c => c.Age).NotNull().NotEmpty();
-            RuleFor(c => c.Birthday).NotNull().NotEmpty();
-            RuleFor(c => c.Birthday).NotNull().NotEmpty();
-            RuleFor(c => c.Birthday).NotNull().NotEmpty();
             RuleFor(c => c.Birthday).NotNull().NotEmpty();
 
             RuleFor(c => c).MustAsync(InvalidDuplicateAsync).WithMessage("The customer already exists.");

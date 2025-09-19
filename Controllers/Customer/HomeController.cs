@@ -7,10 +7,8 @@ namespace OrderService.Controllers.Customer;
 
 [Route("api/customer_controller")]
 [ApiController]
-public class HomeController(ICustomersRepository repository, AppDBContext appContext) : Controller
+public class HomeController(ICustomersRepository repository, AppDBContext appContext, Validation validation) : Controller
 {
-    // GET: HomeController
-
     #region Gets
 
     [HttpGet]
@@ -44,16 +42,16 @@ public class HomeController(ICustomersRepository repository, AppDBContext appCon
     [HttpPost, Route("create")]
     public async Task<ActionResult> CreateCustomerAsync([FromBody] ViewModels.CustomerViewModel viewModel, CancellationToken cancellationToken)
     {
-        Validation validator = new();
-
         var model = new Models.Customer(name: viewModel.Name, surname: viewModel.Surname, pronouns: viewModel.Pronouns,
             age: viewModel.Age, birthday: viewModel.Birthday, adress: viewModel.Adress, email: viewModel.Email,
-            password: viewModel.Password, phoneNumber: viewModel.PhoneNumber, registrationDate: new DateTime());
+            password: viewModel.Password, phoneNumber: viewModel.PhoneNumber, registrationDate: DateTime.UtcNow);
 
-        ValidationResult result = await validator.ValidateAsync(model, cancellationToken);
+        ValidationResult result = await validation.ValidateAsync(model, cancellationToken);
 
         if (!result.IsValid)
-            return BadRequest("It was not possible to register the new customer");
+            return BadRequest(result.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }));
+
+        await appContext.AddAsync(model, cancellationToken);
 
         return Ok(model);
     }

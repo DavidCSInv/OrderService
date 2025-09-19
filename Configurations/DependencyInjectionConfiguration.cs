@@ -7,9 +7,12 @@ namespace OrderService.Configurations
     {
         public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
         {
+
+            //Repositories
             services.AddScoped<ICustomersRepository, CustomersRepository>();
             services.AddScoped<ICategoryrRepository, CategoryRepository>();
-
+            //Controllers and Validations
+            services.AddScoped<Controllers.Customer.Validation>();
             return services;
 
         }

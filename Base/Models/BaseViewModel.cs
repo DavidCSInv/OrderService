@@ -2,6 +2,12 @@
 {
     public class BaseViewModel
     {
-        public int Id { get; set; }
+        public long Id { get; private set; }
+
+        public BaseViewModel()
+        {
+            Id = new long();
+        }
     }
+
 }

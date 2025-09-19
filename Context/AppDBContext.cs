@@ -46,6 +46,10 @@ public static class ModelBuilderExtensions
                             .HasKey("Id")
                             .HasName(pkName);
             }
+
+            modelBuilder.Entity(clrType)
+            .Property("Id")
+            .ValueGeneratedOnAdd();
         }
     }
 }
